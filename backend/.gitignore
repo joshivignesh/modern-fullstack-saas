@@ -1,0 +1,25 @@
+# ASP.NET Core
+bin/
+obj/
+*.dll
+*.exe
+*.so
+*.dylib
+*.su
+*.o
+*.a
+*.la
+*.lo
+*.o.d
+.DS_Store
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.vs/
+.vscode/
+appsettings.local.json
+*.user
+*.db
+*.db-journal
