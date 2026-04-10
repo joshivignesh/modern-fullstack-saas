@@ -1,175 +1,189 @@
-# Modern Full-Stack SaaS Application
+# Modern Full-Stack SaaS
 
-A production-ready, enterprise-grade SaaS application template built with cutting-edge technologies.
+A full stack SaaS application template built with ASP.NET Core 8 and React 18 + TypeScript. Designed around Clean Architecture and microservices patterns, with PostgreSQL, Redis, RabbitMQ, and a complete CI/CD pipeline.
 
-## 🚀 What's Included
+---
 
-### Backend (ASP.NET Core 8)
-- Clean Architecture with CQRS pattern
-- Microservices-ready design
-- Entity Framework Core with PostgreSQL
-- JWT + OAuth2 authentication
-- SignalR for real-time features
-- GraphQL + REST API
-- Comprehensive error handling
-- Structured logging with Serilog
-- Unit & integration tests
-
-### Frontend (React 18 + TypeScript)
-- Modern React with Hooks
-- Type-safe with TypeScript
-- Vite for blazing-fast builds
-- Tailwind CSS for styling
-- React Router for navigation
-- TanStack Query for data fetching
-- Zustand for state management
-- React Hook Form + Zod validation
-- Comprehensive test coverage
-
-### Infrastructure
-- Docker & Docker Compose
-- PostgreSQL database
-- Redis for caching
-- RabbitMQ for messaging
-- GitHub Actions CI/CD
-- Health checks on all services
-
-## 📊 Project Stats
-- **Backend**: ~100% type-safe C#
-- **Frontend**: 100% TypeScript
-- **Test Coverage**: 80%+
-- **Code Quality**: SonarQube ready
-
-## 🛠 Tech Stack Overview
+## Stack
 
 | Layer | Technology |
-|-------|------------|
-| **Frontend Framework** | React 18 + TypeScript |
-| **Frontend Build** | Vite |
-| **Styling** | Tailwind CSS |
-| **Backend Framework** | ASP.NET Core 8 |
-| **Database** | PostgreSQL 15 |
-| **Caching** | Redis |
-| **Message Queue** | RabbitMQ |
-| **ORM** | Entity Framework Core |
-| **API Styles** | REST + GraphQL |
-| **Real-time** | SignalR |
-| **Testing Backend** | xUnit + TestContainers |
-| **Testing Frontend** | Vitest + React Testing Library |
-| **CI/CD** | GitHub Actions |
+|-------|-----------|
+| Backend | ASP.NET Core 8, C# |
+| Architecture | Clean Architecture — Domain, Application, Infrastructure, API layers |
+| Database | PostgreSQL 15 + Entity Framework Core |
+| Caching | Redis |
+| Messaging | RabbitMQ |
+| Auth | JWT + OAuth2 |
+| API | REST + GraphQL |
+| Real-time | SignalR |
+| Logging | Serilog |
+| Frontend | React 18 + TypeScript |
+| Build | Vite |
+| Styling | Tailwind CSS |
+| State | Zustand |
+| Data fetching | TanStack Query (React Query) |
+| Forms | React Hook Form + Zod |
+| Testing (backend) | xUnit + TestContainers |
+| Testing (frontend) | Vitest + React Testing Library |
+| CI/CD | GitHub Actions |
+| Infra | Docker Compose |
 
-## 🚀 Quick Start
+---
+
+## Getting Started
 
 ### Prerequisites
-- Docker & Docker Compose
-- .NET 8 SDK
-- Node.js 18+
 
-### Setup
+- [.NET 8 SDK](https://dotnet.microsoft.com/download)
+- [Node.js 18+](https://nodejs.org)
+- [Docker Desktop](https://www.docker.com/products/docker-desktop)
 
-\`\`\`bash
-# Clone and setup
-git clone <repo>
-cd modern-fullstack-saas
+### 1. Start infrastructure
 
-# Start infrastructure
+```bash
 docker-compose up -d
+```
 
-# Backend
+This starts PostgreSQL, Redis, and RabbitMQ locally. Health checks are wired on all three — the app won't connect until they're ready.
+
+### 2. Run the backend
+
+```bash
 cd backend
+dotnet restore
 dotnet ef database update
 dotnet run
+# API → https://localhost:5001
+# Swagger → https://localhost:5001/swagger
+```
 
-# Frontend (in new terminal)
+### 3. Run the frontend
+
+```bash
 cd frontend
 npm install
 npm run dev
-\`\`\`
+# App → http://localhost:5173
+```
 
-**Backend API**: https://localhost:5001
-**Frontend**: http://localhost:5173
+---
 
-## 📁 Project Structure
+## Project Structure
 
-\`\`\`
+```
 modern-fullstack-saas/
 ├── backend/
-│   ├── src/
-│   │   ├── Core/          # Domain + Application layers
-│   │   ├── Infrastructure/
-│   │   ├── API/           # Web API
-│   │   └── Services/      # Microservices
-│   ├── tests/
-│   └── docker-compose.yml
+│   ├── Directory.Build.props        ← Global build config (nullable, warnings as errors)
+│   └── src/
+│       ├── Core/
+│       │   ├── Domain/              ← Entities, value objects, domain events
+│       │   └── Application/         ← Use cases, DTOs, service interfaces
+│       ├── Infrastructure/          ← EF Core, Redis, RabbitMQ, external APIs
+│       ├── API/                     ← Controllers, middleware, Swagger
+│       └── Services/                ← Individual microservices
 ├── frontend/
-│   ├── src/
-│   │   ├── components/
-│   │   ├── pages/
-│   │   ├── hooks/
-│   │   ├── store/
-│   │   ├── services/
-│   │   └── types/
-│   └── public/
-├── .github/
-│   └── workflows/         # CI/CD
-└── README.md
-\`\`\`
+│   └── src/
+│       ├── components/              ← Reusable UI
+│       ├── pages/                   ← Route-level components
+│       ├── hooks/                   ← Custom React hooks
+│       ├── store/                   ← Zustand state slices
+│       ├── services/                ← API service layer
+│       └── types/                   ← Shared TypeScript types
+├── .github/workflows/ci.yml         ← Build, lint, test on every push
+└── docker-compose.yml               ← PostgreSQL, Redis, RabbitMQ
+```
 
-## ✨ Key Features
+---
 
-- ✅ **Production-Ready**: Built with industry best practices
-- ✅ **Type-Safe**: Both backend (C#) and frontend (TypeScript)
-- ✅ **Scalable**: Microservices architecture
-- ✅ **Well-Tested**: Comprehensive test coverage
-- ✅ **Modern Stack**: Latest frameworks and tools
-- ✅ **CI/CD Ready**: GitHub Actions workflows included
-- ✅ **Containerized**: Docker setup for easy deployment
-- ✅ **Documentation**: Code and architecture well-documented
+## Architecture
 
-## 📚 Documentation
+### Backend — Clean Architecture
 
-- [Backend Setup](./backend/README.md)
-- [Frontend Setup](./frontend/README.md)
-- [Architecture Overview](./ARCHITECTURE.md)
-- [API Documentation](./docs/API.md)
+The backend follows Clean Architecture with a strict dependency rule — inner layers never reference outer layers.
 
-## 🧪 Testing
+```
+Domain        ← no dependencies
+Application   ← depends on Domain only
+Infrastructure← depends on Application (implements interfaces)
+API           ← depends on Application (calls use cases)
+```
 
-\`\`\`bash
-# Backend tests
-cd backend && dotnet test
+CQRS separates reads from writes. Commands mutate state; queries return data. Each use case is a single class with a single responsibility.
 
-# Frontend tests
-cd frontend && npm run test
-\`\`\`
+### Frontend — Feature-first structure
 
-## 🐳 Docker
+Components are kept small and focused. TanStack Query manages server state — loading, caching, refetching, and error states. Zustand handles client-only state. Zod validates all form input before it reaches the API.
 
-\`\`\`bash
-# Start all services
+---
+
+## Infrastructure
+
+### Docker Compose
+
+Three services, all with health checks:
+
+| Service | Port | Purpose |
+|---------|------|---------|
+| PostgreSQL 15 | 5432 | Primary database |
+| Redis 7 | 6379 | Caching, session storage |
+| RabbitMQ 3.12 | 5672 / 15672 | Async messaging, management UI |
+
+```bash
+# Start
 docker-compose up -d
 
-# View logs
+# Logs
 docker-compose logs -f
 
-# Stop services
-docker-compose down
-\`\`\`
+# Stop and remove volumes
+docker-compose down -v
+```
 
-## 🤝 Contributing
+### CI/CD
 
-1. Fork the repository
-2. Create a feature branch
-3. Commit your changes
-4. Push to the branch
-5. Open a Pull Request
+GitHub Actions runs on every push to `main` and `develop`:
 
-## 📄 License
+- **Backend** — restore, build, test
+- **Frontend** — type-check, lint, test, build
 
-MIT License - see LICENSE file for details
+Both jobs run in parallel. A failing test blocks the merge.
 
-## 👨‍💻 Author
+---
 
-[Your Name] - Senior Full-Stack Developer
+## Testing
 
-Connect on [LinkedIn](https://linkedin.com/in/joshivignesh) | Check out [Medium](https://medium.com/@joshi.vignesh)
+```bash
+# Backend
+cd backend
+dotnet test
+
+# Frontend
+cd frontend
+npm run test         # Vitest headless
+npm run test:ui      # Vitest with browser UI
+```
+
+Backend integration tests use TestContainers — a real PostgreSQL instance spins up in Docker for each test run, then tears down cleanly.
+
+---
+
+## Environment Variables
+
+```env
+# frontend/.env.local
+VITE_API_URL=https://localhost:5001
+VITE_API_TIMEOUT=30000
+```
+
+---
+
+## Docs
+
+- [Backend setup and architecture](./backend/README.md)
+- [Frontend setup and structure](./frontend/README.md)
+
+---
+
+## Author
+
+Vignesh Joshi — [GitHub](https://github.com/joshivignesh) · [LinkedIn](https://linkedin.com/in/joshivignesh)
